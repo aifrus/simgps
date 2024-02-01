@@ -7,7 +7,7 @@
     <ProjectGuid>{4F33C767-1C01-4064-AB93-9373C8AEE271}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimGPS</RootNamespace>
+    <RootNamespace>Aifrus.SimGPS</RootNamespace>
     <AssemblyName>SimGPS</AssemblyName>
     <ApplicationIcon>SimGPS.ico</ApplicationIcon>
     <FileUpgradeFlags>
@@ -35,7 +35,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SimGPS.Program</StartupObject>
+    <StartupObject>Aifrus.SimGPS.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>

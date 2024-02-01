@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-
-// Add these two statements to all SimConnect clients
 using Microsoft.FlightSimulator.SimConnect;
 using System.Runtime.InteropServices;
 
-namespace SimGPS
+namespace Aifrus.SimGPS
 {
-
 
     public partial class Form1 : Form
     {
+        private readonly NMEAEncoder nmeaEncoder = new NMEAEncoder();
+
         public Form1()
         {
             response = 1;
@@ -56,10 +50,8 @@ namespace SimGPS
             timer1.Enabled = false;
             textBox_latitude.Text = "";
             textBox_longitude.Text = "";
-            textBox_trueheading.Text = "";
-            textBox_groundaltitude.Text = "";
-            label_DirNumber.Text = "";
-            label_FileNumber.Text = "";
+            textBox_course.Text = "";
+            textBox_altitude.Text = "";
         }
 
         private void closeConnection()
@@ -111,8 +103,11 @@ namespace SimGPS
                 my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Title", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Latitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Longitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Heading Degrees True", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Ground Altitude", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Zulu time", "seconds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Ground Velocity", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Heading Degrees True", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
                 my_simconnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
                 my_simconnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(simconnect_OnRecvSimobjectDataBytype);
             }
@@ -126,8 +121,6 @@ namespace SimGPS
         {
             button_Connect.Enabled = bConnect;
             button_Disconnect.Enabled = bDisconnect;
-            button_addHour.Enabled = bDisconnect;
-            button_subHour.Enabled = bDisconnect;
         }
 
         private void simconnect_OnRecvException(SimConnect sender, SIMCONNECT_RECV_EXCEPTION data)
@@ -149,76 +142,42 @@ namespace SimGPS
 
         private void simconnect_OnRecvSimobjectDataBytype(SimConnect sender, SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE data)
         {
-            string DirNumberText = "";
-            string DirNumber1Text = "";
-            string DirNumber2Text = "";
-            string FileNumberText = "";
-            string FileNumber1Text = "";
-            string FileNumber2Text = "";
-            double DirNumber1 = 0;
-            double DirNumber2 = 0;
-            double FileNumber1 = 0;
-            double FileNumber2 = 0;
-
-
             if (data.dwRequestID == 0)
             {
                 Struct1 struct1 = (Struct1)data.dwData[0];
-                // label_aircraft.Text = struct1.title.ToString();
+                label_aircraft.Text = struct1.title.ToString();
                 textBox_latitude.Text = struct1.latitude.ToString();
                 textBox_longitude.Text = struct1.longitude.ToString();
-                textBox_trueheading.Text = struct1.trueheading.ToString();
-                textBox_groundaltitude.Text = struct1.groundaltitude.ToString();
-
-                DirNumber1 = ((int)(((180.0 + (struct1.longitude)) * 12) / 360.0));
-                if (DirNumber1 < 10)
-                    DirNumber1Text = "0" + DirNumber1.ToString();
-                else
-                    DirNumber1Text = DirNumber1.ToString();
-                DirNumber2 = ((int)(((90.0 - (struct1.latitude)) * 8) / 180.0));
-                if (DirNumber2 < 10)
-                    DirNumber2Text = "0" + DirNumber2.ToString();
-                else
-                    DirNumber2Text = DirNumber2.ToString();
-                DirNumberText = DirNumber1Text + DirNumber2Text;
-
-                FileNumber1 = ((int)(((180.0 + (struct1.longitude)) * 96) / 360.0));
-                if (FileNumber1 < 10)
-                    FileNumber1Text = "0" + FileNumber1.ToString();
-                else
-                    FileNumber1Text = FileNumber1.ToString();
-                FileNumber2 = ((int)(((90.0 - (struct1.latitude)) * 64) / 180.0));
-                if (FileNumber2 < 10)
-                    FileNumber2Text = "0" + FileNumber2.ToString();
-                else
-                    FileNumber2Text = FileNumber2.ToString();
-                FileNumberText = FileNumber1Text + FileNumber2Text;
-
-                label_DirNumber.Text = DirNumberText;
-                label_FileNumber.Text = FileNumberText;
-
-
+                textBox_course.Text = struct1.course.ToString();
+                textBox_altitude.Text = struct1.altitude.ToString();
+                textBox_utcTime.Text = struct1.utcTime.ToString();
+                textBox_speed.Text = struct1.speed.ToString();
+                nmeaEncoder.SetLatitude(struct1.latitude);
+                nmeaEncoder.SetLongitude(struct1.longitude);
+                nmeaEncoder.SetAltitude(struct1.altitude);
+                nmeaEncoder.SetCourse(struct1.course);
+                nmeaEncoder.SetSpeed(struct1.speed);
+                nmeaEncoder.SetTime(DateTime.UtcNow);
+                nmeaEncoder.SetGeoidalSeparation(-34);
+                textBox_NMEASentences.Text = nmeaEncoder.Encode();
             }
             else
             {
                 label_status.Text = "Unknown request ID: " + ((uint)data.dwRequestID);
                 textBox_latitude.Text = "";
                 textBox_longitude.Text = "";
-                textBox_trueheading.Text = "";
-                textBox_groundaltitude.Text = "";
-                label_DirNumber.Text = "";
-                label_FileNumber.Text = "";
+                textBox_course.Text = "";
+                textBox_altitude.Text = "";
             }
         }
 
         private void timer1_Tick_1(object sender, EventArgs e)
         {
             my_simconnect.RequestDataOnSimObjectType(DATA_REQUESTS.REQUEST_1, DEFINITIONS.Struct1, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
-            label_status.Text = "Request sent...";
         }
 
 
-        private Microsoft.FlightSimulator.SimConnect.SimConnect my_simconnect;
+        private SimConnect my_simconnect;
         private string output;
         private int response;
         private const int WM_USER_SIMCONNECT = 0x402;
@@ -241,45 +200,13 @@ namespace SimGPS
             public string title;
             public double latitude;
             public double longitude;
-            public double trueheading;
-            public double groundaltitude;
+            public double altitude;
+            public double utcTime;
+            public double speed;
+            public double course;
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox1.Checked == true) Form1.ActiveForm.TopMost = true;
-            else Form1.ActiveForm.TopMost = false;
-        }
-
-        private void button_addHour_Click(object sender, EventArgs e)
-        {
-            my_simconnect.MapClientEventToSimEvent((Enum)Form1.EVENTS.KEY_CLOCK_HOURS_INC, "CLOCK_HOURS_INC");
-            my_simconnect.TransmitClientEvent(0U, (Enum)Form1.EVENTS.KEY_CLOCK_HOURS_INC, 1, (Enum)Form1.NOTIFICATION_GROUPS.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-        }
-
-        private enum EVENTS
-        {
-            KEY_PAUSE_ON,
-            KEY_PAUSE_OFF,
-            KEY_CLOCK_HOURS_INC,
-            KEY_CLOCK_HOURS_DEC,
-        }
-
-        private enum NOTIFICATION_GROUPS
-        {
-            GROUP0,
-        }
-
-        private void button_subHour_Click(object sender, EventArgs e)
-        {
-            my_simconnect.MapClientEventToSimEvent((Enum)Form1.EVENTS.KEY_CLOCK_HOURS_DEC, "CLOCK_HOURS_DEC");
-            my_simconnect.TransmitClientEvent(0U, (Enum)Form1.EVENTS.KEY_CLOCK_HOURS_DEC, 1, (Enum)Form1.NOTIFICATION_GROUPS.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }
+
 

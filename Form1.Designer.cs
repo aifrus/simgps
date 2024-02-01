@@ -1,4 +1,4 @@
-namespace SimGPS
+namespace Aifrus.SimGPS
 {
     partial class Form1
     {
@@ -29,27 +29,25 @@ namespace SimGPS
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.textBox_latitude = new System.Windows.Forms.TextBox();
             this.textBox_longitude = new System.Windows.Forms.TextBox();
-            this.textBox_trueheading = new System.Windows.Forms.TextBox();
+            this.textBox_course = new System.Windows.Forms.TextBox();
             this.label_longitude = new System.Windows.Forms.Label();
-            this.label_trueheading = new System.Windows.Forms.Label();
+            this.label_course = new System.Windows.Forms.Label();
             this.label_status = new System.Windows.Forms.Label();
-            this.label_groundaltitude = new System.Windows.Forms.Label();
-            this.textBox_groundaltitude = new System.Windows.Forms.TextBox();
+            this.label_altitude = new System.Windows.Forms.Label();
+            this.textBox_altitude = new System.Windows.Forms.TextBox();
             this.button_Connect = new System.Windows.Forms.Button();
             this.button_Disconnect = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label_Dir = new System.Windows.Forms.Label();
-            this.label_File = new System.Windows.Forms.Label();
-            this.label_DirNumber = new System.Windows.Forms.Label();
-            this.label_FileNumber = new System.Windows.Forms.Label();
             this.label_latitude = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button_addHour = new System.Windows.Forms.Button();
-            this.button_subHour = new System.Windows.Forms.Button();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.textBox_NMEASentences = new System.Windows.Forms.TextBox();
+            this.label_aircraft = new System.Windows.Forms.Label();
+            this.label_utc = new System.Windows.Forms.Label();
+            this.textBox_utcTime = new System.Windows.Forms.TextBox();
+            this.textBox_speed = new System.Windows.Forms.TextBox();
+            this.label_speed = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox_latitude
@@ -68,13 +66,13 @@ namespace SimGPS
             this.textBox_longitude.Size = new System.Drawing.Size(140, 20);
             this.textBox_longitude.TabIndex = 1;
             // 
-            // textBox_trueheading
+            // textBox_course
             // 
-            this.textBox_trueheading.Location = new System.Drawing.Point(290, 59);
-            this.textBox_trueheading.Name = "textBox_trueheading";
-            this.textBox_trueheading.ReadOnly = true;
-            this.textBox_trueheading.Size = new System.Drawing.Size(140, 20);
-            this.textBox_trueheading.TabIndex = 2;
+            this.textBox_course.Location = new System.Drawing.Point(260, 62);
+            this.textBox_course.Name = "textBox_course";
+            this.textBox_course.ReadOnly = true;
+            this.textBox_course.Size = new System.Drawing.Size(140, 20);
+            this.textBox_course.TabIndex = 2;
             // 
             // label_longitude
             // 
@@ -85,42 +83,42 @@ namespace SimGPS
             this.label_longitude.TabIndex = 4;
             this.label_longitude.Text = "longitude";
             // 
-            // label_trueheading
+            // label_course
             // 
-            this.label_trueheading.AutoSize = true;
-            this.label_trueheading.Location = new System.Drawing.Point(218, 62);
-            this.label_trueheading.Name = "label_trueheading";
-            this.label_trueheading.Size = new System.Drawing.Size(66, 13);
-            this.label_trueheading.TabIndex = 5;
-            this.label_trueheading.Text = "true heading";
+            this.label_course.AutoSize = true;
+            this.label_course.Location = new System.Drawing.Point(215, 65);
+            this.label_course.Name = "label_course";
+            this.label_course.Size = new System.Drawing.Size(39, 13);
+            this.label_course.TabIndex = 5;
+            this.label_course.Text = "course";
             // 
             // label_status
             // 
             this.label_status.AutoSize = true;
             this.label_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_status.ForeColor = System.Drawing.Color.Red;
-            this.label_status.Location = new System.Drawing.Point(12, 37);
+            this.label_status.Location = new System.Drawing.Point(12, 31);
             this.label_status.Name = "label_status";
             this.label_status.Size = new System.Drawing.Size(129, 13);
             this.label_status.TabIndex = 6;
             this.label_status.Text = "Not Connected to sim";
             // 
-            // label_groundaltitude
+            // label_altitude
             // 
-            this.label_groundaltitude.AutoSize = true;
-            this.label_groundaltitude.Location = new System.Drawing.Point(209, 88);
-            this.label_groundaltitude.Name = "label_groundaltitude";
-            this.label_groundaltitude.Size = new System.Drawing.Size(77, 13);
-            this.label_groundaltitude.TabIndex = 7;
-            this.label_groundaltitude.Text = "ground altitude";
+            this.label_altitude.AutoSize = true;
+            this.label_altitude.Location = new System.Drawing.Point(213, 91);
+            this.label_altitude.Name = "label_altitude";
+            this.label_altitude.Size = new System.Drawing.Size(41, 13);
+            this.label_altitude.TabIndex = 7;
+            this.label_altitude.Text = "altitude";
             // 
-            // textBox_groundaltitude
+            // textBox_altitude
             // 
-            this.textBox_groundaltitude.Location = new System.Drawing.Point(290, 85);
-            this.textBox_groundaltitude.Name = "textBox_groundaltitude";
-            this.textBox_groundaltitude.ReadOnly = true;
-            this.textBox_groundaltitude.Size = new System.Drawing.Size(140, 20);
-            this.textBox_groundaltitude.TabIndex = 8;
+            this.textBox_altitude.Location = new System.Drawing.Point(260, 88);
+            this.textBox_altitude.Name = "textBox_altitude";
+            this.textBox_altitude.ReadOnly = true;
+            this.textBox_altitude.Size = new System.Drawing.Size(140, 20);
+            this.textBox_altitude.TabIndex = 8;
             // 
             // button_Connect
             // 
@@ -144,44 +142,8 @@ namespace SimGPS
             // 
             // timer1
             // 
-            this.timer1.Interval = 250;
+            this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick_1);
-            // 
-            // label_Dir
-            // 
-            this.label_Dir.AutoSize = true;
-            this.label_Dir.Location = new System.Drawing.Point(373, 12);
-            this.label_Dir.Name = "label_Dir";
-            this.label_Dir.Size = new System.Drawing.Size(27, 13);
-            this.label_Dir.TabIndex = 12;
-            this.label_Dir.Text = "Dir#";
-            // 
-            // label_File
-            // 
-            this.label_File.AutoSize = true;
-            this.label_File.Location = new System.Drawing.Point(373, 25);
-            this.label_File.Name = "label_File";
-            this.label_File.Size = new System.Drawing.Size(30, 13);
-            this.label_File.TabIndex = 13;
-            this.label_File.Text = "File#";
-            // 
-            // label_DirNumber
-            // 
-            this.label_DirNumber.AutoSize = true;
-            this.label_DirNumber.Location = new System.Drawing.Point(403, 12);
-            this.label_DirNumber.Name = "label_DirNumber";
-            this.label_DirNumber.Size = new System.Drawing.Size(27, 13);
-            this.label_DirNumber.TabIndex = 14;
-            this.label_DirNumber.Text = "N/A";
-            // 
-            // label_FileNumber
-            // 
-            this.label_FileNumber.AutoSize = true;
-            this.label_FileNumber.Location = new System.Drawing.Point(403, 25);
-            this.label_FileNumber.Name = "label_FileNumber";
-            this.label_FileNumber.Size = new System.Drawing.Size(27, 13);
-            this.label_FileNumber.TabIndex = 15;
-            this.label_FileNumber.Text = "N/A";
             // 
             // label_latitude
             // 
@@ -192,72 +154,86 @@ namespace SimGPS
             this.label_latitude.TabIndex = 3;
             this.label_latitude.Text = "latitude";
             // 
-            // checkBox1
+            // textBox_NMEASentences
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(212, 10);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(98, 17);
-            this.checkBox1.TabIndex = 16;
-            this.checkBox1.Text = "TCalcX on Top";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.textBox_NMEASentences.Location = new System.Drawing.Point(11, 140);
+            this.textBox_NMEASentences.Multiline = true;
+            this.textBox_NMEASentences.Name = "textBox_NMEASentences";
+            this.textBox_NMEASentences.ReadOnly = true;
+            this.textBox_NMEASentences.Size = new System.Drawing.Size(389, 61);
+            this.textBox_NMEASentences.TabIndex = 11;
+            this.textBox_NMEASentences.WordWrap = false;
             // 
-            // button_addHour
+            // label_aircraft
             // 
-            this.button_addHour.Location = new System.Drawing.Point(12, 177);
-            this.button_addHour.Name = "button_addHour";
-            this.button_addHour.Size = new System.Drawing.Size(89, 23);
-            this.button_addHour.TabIndex = 17;
-            this.button_addHour.Text = "Add 1 hour";
-            this.button_addHour.UseVisualStyleBackColor = true;
-            this.button_addHour.Click += new System.EventHandler(this.button_addHour_Click);
+            this.label_aircraft.AutoSize = true;
+            this.label_aircraft.Location = new System.Drawing.Point(173, 10);
+            this.label_aircraft.Name = "label_aircraft";
+            this.label_aircraft.Size = new System.Drawing.Size(0, 13);
+            this.label_aircraft.TabIndex = 12;
             // 
-            // button_subHour
+            // label_utc
             // 
-            this.button_subHour.Location = new System.Drawing.Point(107, 177);
-            this.button_subHour.Name = "button_subHour";
-            this.button_subHour.Size = new System.Drawing.Size(89, 23);
-            this.button_subHour.TabIndex = 18;
-            this.button_subHour.Text = "Subtract 1 hour";
-            this.button_subHour.UseVisualStyleBackColor = true;
-            this.button_subHour.Click += new System.EventHandler(this.button_subHour_Click);
+            this.label_utc.AutoSize = true;
+            this.label_utc.Location = new System.Drawing.Point(35, 117);
+            this.label_utc.Name = "label_utc";
+            this.label_utc.Size = new System.Drawing.Size(22, 13);
+            this.label_utc.TabIndex = 14;
+            this.label_utc.Text = "utc";
             // 
-            // openFileDialog1
+            // textBox_utcTime
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.textBox_utcTime.Location = new System.Drawing.Point(63, 114);
+            this.textBox_utcTime.Name = "textBox_utcTime";
+            this.textBox_utcTime.ReadOnly = true;
+            this.textBox_utcTime.Size = new System.Drawing.Size(140, 20);
+            this.textBox_utcTime.TabIndex = 13;
+            // 
+            // textBox_speed
+            // 
+            this.textBox_speed.Location = new System.Drawing.Point(260, 114);
+            this.textBox_speed.Name = "textBox_speed";
+            this.textBox_speed.ReadOnly = true;
+            this.textBox_speed.Size = new System.Drawing.Size(140, 20);
+            this.textBox_speed.TabIndex = 16;
+            // 
+            // label_speed
+            // 
+            this.label_speed.AutoSize = true;
+            this.label_speed.Location = new System.Drawing.Point(218, 117);
+            this.label_speed.Name = "label_speed";
+            this.label_speed.Size = new System.Drawing.Size(36, 13);
+            this.label_speed.TabIndex = 15;
+            this.label_speed.Text = "speed";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(439, 212);
-            this.Controls.Add(this.button_subHour);
-            this.Controls.Add(this.button_addHour);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.label_FileNumber);
-            this.Controls.Add(this.label_DirNumber);
-            this.Controls.Add(this.label_File);
-            this.Controls.Add(this.label_Dir);
+            this.ClientSize = new System.Drawing.Size(410, 210);
+            this.Controls.Add(this.textBox_speed);
+            this.Controls.Add(this.label_speed);
+            this.Controls.Add(this.label_utc);
+            this.Controls.Add(this.textBox_utcTime);
+            this.Controls.Add(this.label_aircraft);
+            this.Controls.Add(this.textBox_NMEASentences);
             this.Controls.Add(this.button_Disconnect);
             this.Controls.Add(this.button_Connect);
-            this.Controls.Add(this.textBox_groundaltitude);
-            this.Controls.Add(this.label_groundaltitude);
+            this.Controls.Add(this.textBox_altitude);
+            this.Controls.Add(this.label_altitude);
             this.Controls.Add(this.label_status);
-            this.Controls.Add(this.label_trueheading);
+            this.Controls.Add(this.label_course);
             this.Controls.Add(this.label_longitude);
             this.Controls.Add(this.label_latitude);
-            this.Controls.Add(this.textBox_trueheading);
+            this.Controls.Add(this.textBox_course);
             this.Controls.Add(this.textBox_longitude);
             this.Controls.Add(this.textBox_latitude);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "SimGPS";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -267,25 +243,22 @@ namespace SimGPS
 
         private System.Windows.Forms.TextBox textBox_latitude;
         private System.Windows.Forms.TextBox textBox_longitude;
-        private System.Windows.Forms.TextBox textBox_trueheading;
+        private System.Windows.Forms.TextBox textBox_course;
         private System.Windows.Forms.Label label_longitude;
-        private System.Windows.Forms.Label label_trueheading;
+        private System.Windows.Forms.Label label_course;
         private System.Windows.Forms.Label label_status;
-        private System.Windows.Forms.Label label_groundaltitude;
-        private System.Windows.Forms.TextBox textBox_groundaltitude;
+        private System.Windows.Forms.Label label_altitude;
+        private System.Windows.Forms.TextBox textBox_altitude;
         private System.Windows.Forms.Button button_Connect;
         private System.Windows.Forms.Button button_Disconnect;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Label label_Dir;
-        private System.Windows.Forms.Label label_File;
-        private System.Windows.Forms.Label label_DirNumber;
-        private System.Windows.Forms.Label label_FileNumber;
         private System.Windows.Forms.Label label_latitude;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Button button_addHour;
-        private System.Windows.Forms.Button button_subHour;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.TextBox textBox_NMEASentences;
+        private System.Windows.Forms.Label label_aircraft;
+        private System.Windows.Forms.Label label_utc;
+        private System.Windows.Forms.TextBox textBox_utcTime;
+        private System.Windows.Forms.TextBox textBox_speed;
+        private System.Windows.Forms.Label label_speed;
     }
 }
 
