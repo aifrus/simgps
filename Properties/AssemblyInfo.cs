@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TCalc_004")]
+[assembly: AssemblyTitle("SimGPS")]
 [assembly: AssemblyDescription("Flight Simulator SimConnect tool")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Richard W. Ludowise")]
-[assembly: AssemblyProduct("TCalc_004")]
+[assembly: AssemblyProduct("SimGPS")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

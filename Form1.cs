@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Microsoft.FlightSimulator.SimConnect;
 using System.Runtime.InteropServices;
 
-namespace TCalc_004
+namespace SimGPS
 {
 
 

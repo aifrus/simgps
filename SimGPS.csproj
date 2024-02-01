@@ -7,9 +7,9 @@
     <ProjectGuid>{4F33C767-1C01-4064-AB93-9373C8AEE271}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TCalc_004</RootNamespace>
-    <AssemblyName>TCalc_004</AssemblyName>
-    <ApplicationIcon>World.ico</ApplicationIcon>
+    <RootNamespace>SimGPS</RootNamespace>
+    <AssemblyName>SimGPS</AssemblyName>
+    <ApplicationIcon>SimGPS.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -35,7 +35,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>TCalc_004.Program</StartupObject>
+    <StartupObject>SimGPS.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -116,7 +116,7 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="World.ico" />
+    <Content Include="SimGPS.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

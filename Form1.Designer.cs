@@ -1,4 +1,4 @@
-namespace TCalc_004
+namespace SimGPS
 {
     partial class Form1
     {
@@ -255,7 +255,7 @@ namespace TCalc_004
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "TCalc_004";
+            this.Text = "SimGPS";
             this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();

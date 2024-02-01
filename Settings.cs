@@ -1,4 +1,4 @@
-namespace TCalcX_004.Properties
+namespace SimGPS.Properties
 {
 
 
