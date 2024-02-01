@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 
 namespace Aifrus.SimGPS
 {
@@ -30,14 +31,14 @@ namespace Aifrus.SimGPS
 
         public string EncodeGPRMC()
         {
-            string data = $"$GPRMC,{FormatTime()},A,{FormatLatitude()},{FormatLongitude()},{FormatSpeed()},{FormatTrueCourse()},{FormatDate()},,";
+            string data = $"$GPRMC,{FormatTime()},A,{FormatLatitude()},{FormatLongitude()},{FormatSpeed()},{FormatTrueCourse()},{FormatDate()},{FormatMagVar()},";
             string checksum = CalculateChecksum(data);
             return data + "*" + checksum;
         }
 
         public string EncodeGPVTG()
         {
-            string data = $"$GPVTG,{FormatTrueCourse()},T,{FormatTrueCourse()},M,{FormatSpeed()},N,,K,A";
+            string data = $"$GPVTG,{FormatTrueCourse()},T,{FormatMagCourse()},M,{FormatSpeed()},N,,K,A";
             string checksum = CalculateChecksum(data);
             return data + "*" + checksum;
         }
@@ -72,8 +73,13 @@ namespace Aifrus.SimGPS
 
         private string FormatTime()
         {
-            TimeSpan timeSpan = TimeSpan.FromHours(UTCTime);
-            return timeSpan.ToString("hhmmss") + "." + timeSpan.Milliseconds.ToString("000").Substring(0, 2);
+            DateTime time = DateTime.UtcNow;
+            return time.ToString("HHmmss");
+        }
+
+        private string FormatDate()
+        {
+            return DateTime.UtcNow.ToString("ddMMyy");
         }
 
         private string FormatSpeed()
@@ -84,6 +90,12 @@ namespace Aifrus.SimGPS
         private string FormatTrueCourse()
         {
             return TrueCourse.ToString("0.0");
+        }
+
+        private string FormatMagVar()
+        {
+            double MagVar = TrueCourse - MagCourse;
+            return $"{MagVar.ToString("0.0")},W";
         }
 
         private string FormatMagCourse()
@@ -101,10 +113,6 @@ namespace Aifrus.SimGPS
             return GeoidalSeparation.ToString("0.0");
         }
 
-        private string FormatDate()
-        {
-            return DateTime.UtcNow.ToString("ddMMyy");
-        }
 
         public void SetLatitude(double latitude)
         {
@@ -162,7 +170,7 @@ namespace Aifrus.SimGPS
 
         public string Encode()
         {
-            return EncodeGPGGA() + "\r\n" + EncodeGPGLL() + "\r\n" + EncodeGPRMC() + "\r\n" + EncodeGPVTG() + "\r\n";
+            return EncodeGPRMC();
         }
     }
 }
