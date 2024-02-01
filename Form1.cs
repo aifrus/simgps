@@ -275,6 +275,11 @@ namespace SimGPS
             my_simconnect.MapClientEventToSimEvent((Enum)Form1.EVENTS.KEY_CLOCK_HOURS_DEC, "CLOCK_HOURS_DEC");
             my_simconnect.TransmitClientEvent(0U, (Enum)Form1.EVENTS.KEY_CLOCK_HOURS_DEC, 1, (Enum)Form1.NOTIFICATION_GROUPS.GROUP0, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
