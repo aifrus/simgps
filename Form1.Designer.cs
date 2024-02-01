@@ -48,6 +48,7 @@ namespace Aifrus.SimGPS
             this.textBox_utcTime = new System.Windows.Forms.TextBox();
             this.textBox_speed = new System.Windows.Forms.TextBox();
             this.label_speed = new System.Windows.Forms.Label();
+            this.comboBox_Ports = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // textBox_latitude
@@ -97,7 +98,7 @@ namespace Aifrus.SimGPS
             this.label_status.AutoSize = true;
             this.label_status.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_status.ForeColor = System.Drawing.Color.Red;
-            this.label_status.Location = new System.Drawing.Point(12, 31);
+            this.label_status.Location = new System.Drawing.Point(174, 37);
             this.label_status.Name = "label_status";
             this.label_status.Size = new System.Drawing.Size(129, 13);
             this.label_status.TabIndex = 6;
@@ -206,11 +207,20 @@ namespace Aifrus.SimGPS
             this.label_speed.TabIndex = 15;
             this.label_speed.Text = "speed";
             // 
+            // comboBox_Ports
+            // 
+            this.comboBox_Ports.FormattingEnabled = true;
+            this.comboBox_Ports.Location = new System.Drawing.Point(12, 34);
+            this.comboBox_Ports.Name = "comboBox_Ports";
+            this.comboBox_Ports.Size = new System.Drawing.Size(156, 21);
+            this.comboBox_Ports.TabIndex = 17;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(410, 210);
+            this.Controls.Add(this.comboBox_Ports);
             this.Controls.Add(this.textBox_speed);
             this.Controls.Add(this.label_speed);
             this.Controls.Add(this.label_utc);
@@ -259,6 +269,7 @@ namespace Aifrus.SimGPS
         private System.Windows.Forms.TextBox textBox_utcTime;
         private System.Windows.Forms.TextBox textBox_speed;
         private System.Windows.Forms.Label label_speed;
+        private System.Windows.Forms.ComboBox comboBox_Ports;
     }
 }
 

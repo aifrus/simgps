@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Ports;
 using System.Windows.Forms;
 using Microsoft.FlightSimulator.SimConnect;
 using System.Runtime.InteropServices;
@@ -9,6 +10,8 @@ namespace Aifrus.SimGPS
     public partial class Form1 : Form
     {
         private readonly NMEAEncoder nmeaEncoder = new NMEAEncoder();
+        private readonly string[] ports = SerialPort.GetPortNames();
+        private SerialPort serialPort = new SerialPort();
 
         public Form1()
         {
@@ -16,6 +19,10 @@ namespace Aifrus.SimGPS
             output = "\n\n\n\n\n\n\n\n\n\n";
             InitializeComponent();
             setButtons(true, false);
+            foreach (string port in ports)
+            {
+                comboBox_Ports.Items.Add(port);
+            }
         }
 
         private void button_Connect_Click(object sender, EventArgs e)
@@ -24,6 +31,9 @@ namespace Aifrus.SimGPS
             {
                 try
                 {
+                    comboBox_Ports.Enabled = false;
+                    serialPort.PortName = comboBox_Ports.SelectedItem.ToString();
+                    serialPort.Open();
                     my_simconnect = new Microsoft.FlightSimulator.SimConnect.SimConnect("Managed Data Request", base.Handle, 0x402, null, 0);
                     setButtons(false, true);
                     initDataRequest();
@@ -52,6 +62,11 @@ namespace Aifrus.SimGPS
             textBox_longitude.Text = "";
             textBox_course.Text = "";
             textBox_altitude.Text = "";
+            if (serialPort.IsOpen)
+            {
+                serialPort.Close();
+            }
+            comboBox_Ports.Enabled = true;
         }
 
         private void closeConnection()
@@ -103,10 +118,10 @@ namespace Aifrus.SimGPS
                 my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Title", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Latitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Longitude", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Ground Altitude", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Zulu time", "seconds", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Ground Velocity", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
                 my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Heading Degrees True", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Heading Degrees Magnetic", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Plane Altitude", "meters", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                my_simconnect.AddToDataDefinition(DEFINITIONS.Struct1, "Ground Velocity", "knots", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
                 my_simconnect.RegisterDataDefineStruct<Struct1>(DEFINITIONS.Struct1);
                 my_simconnect.OnRecvSimobjectDataBytype += new SimConnect.RecvSimobjectDataBytypeEventHandler(simconnect_OnRecvSimobjectDataBytype);
@@ -148,18 +163,23 @@ namespace Aifrus.SimGPS
                 label_aircraft.Text = struct1.title.ToString();
                 textBox_latitude.Text = struct1.latitude.ToString();
                 textBox_longitude.Text = struct1.longitude.ToString();
-                textBox_course.Text = struct1.course.ToString();
+                textBox_course.Text = struct1.trueCourse.ToString();
                 textBox_altitude.Text = struct1.altitude.ToString();
-                textBox_utcTime.Text = struct1.utcTime.ToString();
-                textBox_speed.Text = struct1.speed.ToString();
+                textBox_utcTime.Text = DateTime.UtcNow.ToString("G");
+                textBox_speed.Text = struct1.groundSpeed.ToString();
                 nmeaEncoder.SetLatitude(struct1.latitude);
                 nmeaEncoder.SetLongitude(struct1.longitude);
                 nmeaEncoder.SetAltitude(struct1.altitude);
-                nmeaEncoder.SetCourse(struct1.course);
-                nmeaEncoder.SetSpeed(struct1.speed);
+                nmeaEncoder.SetTrueCourse(struct1.trueCourse);
+                nmeaEncoder.SetMagCourse(struct1.magCourse);
+                nmeaEncoder.SetSpeed(struct1.groundSpeed);
                 nmeaEncoder.SetTime(DateTime.UtcNow);
                 nmeaEncoder.SetGeoidalSeparation(-34);
                 textBox_NMEASentences.Text = nmeaEncoder.Encode();
+                if (serialPort.IsOpen)
+                {
+                    serialPort.WriteLine(textBox_NMEASentences.Text);
+                }
             }
             else
             {
@@ -200,10 +220,10 @@ namespace Aifrus.SimGPS
             public string title;
             public double latitude;
             public double longitude;
+            public double trueCourse;
+            public double magCourse;
             public double altitude;
-            public double utcTime;
-            public double speed;
-            public double course;
+            public double groundSpeed;
         }
 
     }

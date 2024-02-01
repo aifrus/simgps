@@ -8,7 +8,8 @@ namespace Aifrus.SimGPS
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public double Altitude { get; set; }
-        public double Course { get; set; }
+        public double TrueCourse { get; set; }
+        public double MagCourse { get; set; }
         public double Speed { get; set; }
         public double GeoidalSeparation { get; set; }
 
@@ -29,14 +30,14 @@ namespace Aifrus.SimGPS
 
         public string EncodeGPRMC()
         {
-            string data = $"$GPRMC,{FormatTime()},A,{FormatLatitude()},{FormatLongitude()},{FormatSpeed()},{FormatCourse()},{FormatDate()},,";
+            string data = $"$GPRMC,{FormatTime()},A,{FormatLatitude()},{FormatLongitude()},{FormatSpeed()},{FormatTrueCourse()},{FormatDate()},,";
             string checksum = CalculateChecksum(data);
             return data + "*" + checksum;
         }
 
         public string EncodeGPVTG()
         {
-            string data = $"$GPVTG,{FormatCourse()},T,,M,{FormatSpeed()},N,,K,A";
+            string data = $"$GPVTG,{FormatTrueCourse()},T,{FormatTrueCourse()},M,{FormatSpeed()},N,,K,A";
             string checksum = CalculateChecksum(data);
             return data + "*" + checksum;
         }
@@ -80,9 +81,14 @@ namespace Aifrus.SimGPS
             return Speed.ToString("0.0");
         }
 
-        private string FormatCourse()
+        private string FormatTrueCourse()
         {
-            return Course.ToString("0.0");
+            return TrueCourse.ToString("0.0");
+        }
+
+        private string FormatMagCourse()
+        {
+            return MagCourse.ToString("0.0");
         }
 
         private string FormatAltitude()
@@ -116,16 +122,23 @@ namespace Aifrus.SimGPS
 
         public void SetAltitude(double altitude)
         {
-            if (altitude < -1000.0 || altitude > 10000.0)
-                throw new ArgumentOutOfRangeException(nameof(altitude), "Altitude must be between -1000 and 10000 meters.");
+            if (altitude < -1000.0 || altitude > 1000000.0)
+                throw new ArgumentOutOfRangeException(nameof(altitude), "Altitude must be between -1000 and 1000000 meters.");
             Altitude = altitude;
         }
 
-        public void SetCourse(double course)
+        public void SetTrueCourse(double course)
         {
             if (course < 0.0 || course > 360.0)
                 throw new ArgumentOutOfRangeException(nameof(course), "Course must be between 0 and 360 degrees.");
-            Course = course;
+            TrueCourse = course;
+        }
+
+        public void SetMagCourse(double course)
+        {
+            if (course < 0.0 || course > 360.0)
+                throw new ArgumentOutOfRangeException(nameof(course), "Course must be between 0 and 360 degrees.");
+            MagCourse = course;
         }
 
         public void SetSpeed(double speed)
