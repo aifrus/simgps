@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Drawing;
 
 namespace Aifrus.SimGPS
 {
@@ -13,45 +14,6 @@ namespace Aifrus.SimGPS
         public double MagCourse { get; set; }
         public double Speed { get; set; }
         public double GeoidalSeparation { get; set; }
-
-
-        public string EncodeGPGGA()
-        {
-            string data = $"$GPGGA,{FormatTime()},{FormatLatitude()},{FormatLongitude()},1,12,0.1,{FormatAltitude()},M,{FormatGeoidalSeparation()},M,,";
-            string checksum = CalculateChecksum(data);
-            return data + "*" + checksum;
-        }
-
-        public string EncodeGPGLL()
-        {
-            string data = $"$GPGLL,{FormatLatitude()},{FormatLongitude()},{FormatTime()},A";
-            string checksum = CalculateChecksum(data);
-            return data + "*" + checksum;
-        }
-
-        public string EncodeGPRMC()
-        {
-            string data = $"$GPRMC,{FormatTime()},A,{FormatLatitude()},{FormatLongitude()},{FormatSpeed()},{FormatTrueCourse()},{FormatDate()},{FormatMagVar()},";
-            string checksum = CalculateChecksum(data);
-            return data + "*" + checksum;
-        }
-
-        public string EncodeGPVTG()
-        {
-            string data = $"$GPVTG,{FormatTrueCourse()},T,{FormatMagCourse()},M,{FormatSpeed()},N,,K,A";
-            string checksum = CalculateChecksum(data);
-            return data + "*" + checksum;
-        }
-
-        private string CalculateChecksum(string sentence)
-        {
-            int checksum = 0;
-            for (int i = 1; i < sentence.Length; i++)
-            {
-                checksum ^= sentence[i];
-            }
-            return checksum.ToString("X2");
-        }
 
         private string FormatLatitude()
         {
@@ -74,8 +36,9 @@ namespace Aifrus.SimGPS
         private string FormatTime()
         {
             DateTime time = DateTime.UtcNow;
-            return time.ToString("HHmmss");
+            return time.ToString("HHmmss.ff");
         }
+
 
         private string FormatDate()
         {
@@ -170,7 +133,48 @@ namespace Aifrus.SimGPS
 
         public string Encode()
         {
-            return EncodeGPRMC();
+            return EncodeGPGGA() + "\r\n" +
+                EncodeGPGLL() + "\r\n" +
+                EncodeGPRMC() + "\r\n" +
+                EncodeGPVTG();
+        }
+
+        public string EncodeGPGGA()
+        {
+            string data = $"$GPGGA,{FormatTime()},{FormatLatitude()},{FormatLongitude()},8,12,1.0,{FormatAltitude()},M,{FormatGeoidalSeparation()},M,,";
+            string checksum = CalculateChecksum(data);
+            return data + "*" + checksum;
+        }
+
+        public string EncodeGPGLL()
+        {
+            string data = $"$GPGLL,{FormatLatitude()},{FormatLongitude()},{FormatTime()},A";
+            string checksum = CalculateChecksum(data);
+            return data + "*" + checksum;
+        }
+
+        public string EncodeGPRMC()
+        {
+            string data = $"$GPRMC,{FormatTime()},A,{FormatLatitude()},{FormatLongitude()},{FormatSpeed()},{FormatTrueCourse()},{FormatDate()},{FormatMagVar()},";
+            string checksum = CalculateChecksum(data);
+            return data + "*" + checksum;
+        }
+
+        public string EncodeGPVTG()
+        {
+            string data = $"$GPVTG,{FormatTrueCourse()},T,{FormatMagCourse()},M,{FormatSpeed()},N,,K,A";
+            string checksum = CalculateChecksum(data);
+            return data + "*" + checksum;
+        }
+
+        private string CalculateChecksum(string sentence)
+        {
+            int checksum = 0;
+            for (int i = 1; i < sentence.Length; i++)
+            {
+                checksum ^= sentence[i];
+            }
+            return checksum.ToString("X2");
         }
     }
 }
